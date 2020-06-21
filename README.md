@@ -17,7 +17,7 @@ We provide the pretrained segmentation, retrieval, style adaptation and shape ad
 Please put the models under 'Semantic-CariGANs/'.
 For testing options, please use an aligned photo image and run the below commond. Refer to 'options/test_options.py' for testing setting and details.
 ```
-python predict.py --name parseref_gan
+python predict.py --name parseref_gan --input examples/Scarlett_Johansson_P00002.jpg
 ```
 The training code will be here soon, stay tuned.
 
