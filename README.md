@@ -52,7 +52,7 @@ python train.py --content_dir <content_dir> --style_dir <style_dir>
 
 
 ## Reference
-Please cite our paper if you find it useful for your research.
+Please cite our papers if you find it useful for your research.
 
 @article{Chu2020Learning,
     title={Learning to Caricature via Semantic Shape Transformation},
@@ -60,6 +60,12 @@ Please cite our paper if you find it useful for your research.
     year={2020},
 }
 
+@article{Chu2019Weakly,
+    title={Weakly-supervised Caricature Face Parsing through Domain Adaptation},
+    author={Chu, Wenqing and Hung, Wei-Chih and Tsai, Yi-Hsuan and Cai, Deng and Yang, Ming-Hsuan},
+    journal={arXiv preprint arXiv:1905.05091},
+    year={2019},
+}
 
 ## Acknowledgment
 This code is heavily borrowed from
