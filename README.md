@@ -30,7 +30,7 @@ python predict.py --name parseref_gan --input examples/photo_examples/Woody_Alle
 ```
 Given the style image, please use this command to perform retrieval, shape transformation and style translation:
 ```
-python predict.py --name parseref_gan --input examples/Scarlett_Johansson_P00002.jpg
+python predict.py --name parseref_gan --input examples/photo_examples/Scarlett_Johansson_P00002.jpg
 ```
 
 We follow [CariFaceParsing](https://github.com/ZJULearning/CariFaceParsing) to perform face parsing and provide the pretrain model in checkpoints/parsing.pth.
