@@ -14,7 +14,6 @@ import numpy as np
 from parsing.psp import PSP
 from retrieval.siamese import SiameseNetwork
 import AdaIn.net as StyleNet
-import pdb
 from AdaIn.function import adaptive_instance_normalization
 from torch.nn import functional as F
 import pdb
@@ -167,45 +166,48 @@ if __name__ == '__main__':
 
 
     print('Parsing is done!')
-    #retrieval
     
-    pdb.set_trace()
-    print('Load the caricature gallery!')
-    retrieval_net = SiameseNetwork()
-    retrieval_net.load_state_dict(torch.load(opt.retrieval_model))
-    retrieval_net.cuda()
-    retrieval_net.eval()
-    cari_names = []
-    cari_f = open('examples/cari_gallery/cari.txt')
-    cari_enc= np.zeros((len(cari_f.readlines()), 128))
-    cari_f = open('examples/cari_gallery/cari.txt')
-    for i, cari_name in enumerate(cari_f.readlines()):
-        cari_name = cari_name.strip()
-        img0 = Image.open('examples/cari_gallery/parsing_maps/' + cari_name)
-        img0 = img0.resize((256,256), Image.NEAREST)
-        img0 = channel_1toN(img0, 10)
+    if opt.shape == None:
+        #retrieval
+        print('Load the caricature gallery!')
+        retrieval_net = SiameseNetwork()
+        retrieval_net.load_state_dict(torch.load(opt.retrieval_model))
+        retrieval_net.cuda()
+        retrieval_net.eval()
+        cari_name_gallery = []
+        cari_f = open('examples/cari_gallery/cari.txt')
+        cari_enc= np.zeros((len(cari_f.readlines()), 128))
+        cari_f = open('examples/cari_gallery/cari.txt')
+        for i, cari_name in enumerate(cari_f.readlines()):
+            cari_name = cari_name.strip()
+            img0 = Image.open('examples/cari_gallery/parsing_maps_gallery/' + cari_name)
+            img0 = img0.resize((256,256), Image.NEAREST)
+            img0 = channel_1toN(img0, 10)
 
-        img0 = img0.cuda()
-        z1,output1 = retrieval_net.forward_cari(img0.unsqueeze(0))
-        cari_enc[i] = z1[0].detach().cpu().numpy()
-        cari_names.append(cari_name)
+            img0 = img0.cuda()
+            z1,output1 = retrieval_net.forward_cari(img0.unsqueeze(0))
+            cari_enc[i] = z1[0].detach().cpu().numpy()
+            cari_name_gallery.append(cari_name)
     
-    img0 = sample_mask_large
-    img0 = img0.cuda()
-    z1,output1 = retrieval_net.forward_photo(img0.unsqueeze(0))
-    photo_enc = z1[0].detach().cpu().numpy()
-    dist = []
-    for j in range(len(cari_names)):
-        dd = np.sqrt(np.sum(np.square(photo_enc - cari_enc[j])))
-        dist.append((cari_names[j],dd))
-    dist.sort(key=takeSecond)
-    cari_names = []
-    for j in range(4):
-        cari_names.append(dist[j][0])
+        img0 = sample_mask_large
+        img0 = img0.cuda()
+        z1,output1 = retrieval_net.forward_photo(img0.unsqueeze(0))
+        photo_enc = z1[0].detach().cpu().numpy()
+        dist = []
+        for j in range(len(cari_name_gallery)):
+            dd = np.sqrt(np.sum(np.square(photo_enc - cari_enc[j])))
+            dist.append((cari_name_gallery[j],dd))
+        dist.sort(key=takeSecond)
+        cari_names = []
+        for j in range(5):
+            cari_names.append(dist[j][0])
+        print('The retrieval is done!')
+    else:
+        cari_names = []
+        cari_names.append(opt.shape.split('/')[-1])
 
     #load style transfer network
 
-    print('The retrieval is done!')
     
     vgg = StyleNet.vgg
     style_decoder = StyleNet.decoder
@@ -224,11 +226,18 @@ if __name__ == '__main__':
     content_tf = test_transform(content_size, crop)
     style_tf = test_transform(style_size, crop)
 
+    #cari_names = ['Scarlett_Johansson_C00001.png', 'Condoleezza_Rice_C00001.png', 'Amanda_Seyfried_C00001.png']
+
     # shape transformation
     for cari_name in cari_names:
-        A_path = 'examples/cari_gallery/parsing_maps/' + cari_name
+        if opt.shape == None:
+            A_path = 'examples/cari_gallery/parsing_maps_gallery/' + cari_name
+        else:
+            A_path = opt.shape
         if os.path.exists(A_path) == False:
             continue
+        #A_face_path = A_path.replace('.png', '.jpg')
+        #A_face_path = A_face_path.replace('label', 'image')
         A_face_path = A_path
 
         A = Image.open(A_path)
@@ -254,6 +263,8 @@ if __name__ == '__main__':
         #transformed_val_in_face.save('result_face_transform/' + save_name.replace('png','jpg'))
 
         #style transfer
+        #style_dir = 'AdaIn/style_imgs/'
+        #style_paths = [os.path.join(style_dir, f) for f in os.listdir(style_dir)]
         content = content_tf(transformed_val_in_face)
         content = content.cuda().unsqueeze(0)
         style = style_tf(Image.open(opt.style_path).convert('RGB'))
@@ -263,7 +274,6 @@ if __name__ == '__main__':
             output = style_transfer(style_encoder, style_decoder, content, style, alpha)
         output = output.cpu()
         output = F.upsample(output, size=(256,256))
-        pdb.set_trace()
         save_image(output, 'results/' +save_name)
 
 
