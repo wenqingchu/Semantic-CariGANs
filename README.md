@@ -20,7 +20,7 @@ The image below shows some example results of our method:
 
 ## Usage
 Our method has four parts, segmentation, retrieval, shape transformation and style transfer.
-We provide the pretrained segmentation, retrieval, style adaptation and shape adaptation models in Google Drive (https://drive.google.com/open?id=1x0bJ7wBAsC_jSjm30SIqjl-huuBZMKh6)
+We provide the pretrained segmentation, retrieval, style adaptation and shape adaptation models in Tecent Drive (https://share.weiyun.com/sI26vupw)
 Please put the models under 'Semantic-CariGANs/'.
 For testing options, please use an aligned photo image and run the below commond. Refer to 'options/test_options.py' for testing setting and details.
 
