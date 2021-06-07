@@ -1,5 +1,5 @@
 # Semantic-CariGANs
-Code for "Learning to Caricature via Semantic Shape Transformation"
+PyTorch implementation for "Learning to Caricature via Semantic Shape Transformation". This paper has been accepted to International Journal of Computer Vision (IJCV).
 
 ## Authors
 Wenqing Chu, Wei-Chih Hung, Yi-Hsuan Tsai, Yu-Ting Chang, Yijun Li, Deng Cai, Ming-Hsuan Yang
@@ -56,15 +56,18 @@ Please cite our papers if you find it useful for your research.
 
 @article{Chu2020Learning,
     title={Learning to Caricature via Semantic Shape Transformation},
-    author={Chu, Wenqing and Hung, Wei-Chih and Tsai, Yi-Hsuan Chang, Yu-Ting and Li, Yijun and Cai, Deng and Yang, Ming-Hsuan},
+    author={Chu, Wenqing and Hung, Wei-Chih and Tsai, Yi-Hsuan and Chang, Yu-Ting and Li, Yijun and Cai, Deng and Yang, Ming-Hsuan},
+    journal={arXiv preprint arXiv:2008.05090},
     year={2020},
 }
 
-@article{Chu2019Weakly,
+@inproceedings{Chu2019Weakly,
     title={Weakly-supervised Caricature Face Parsing through Domain Adaptation},
     author={Chu, Wenqing and Hung, Wei-Chih and Tsai, Yi-Hsuan and Cai, Deng and Yang, Ming-Hsuan},
-    journal={arXiv preprint arXiv:1905.05091},
+    booktitle={2019 IEEE International Conference on Image Processing (ICIP)},
+    pages={3282--3286},
     year={2019},
+    organization={IEEE}
 }
 
 ## Acknowledgment
